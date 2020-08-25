@@ -55,7 +55,7 @@
     <p class="login_tips">注册过的用户可凭账号密码登录</p>
     <div @click="mobileLogin" class="login_container">登录</div>
     <router-link class="to_forget" to="/forget" v-if="!loginWay">重置密码？</router-link>
-    <alert-tip :alertText="alertText" :showHide="showAlert" @closeTip="closeTip" v-if="showAlert"></alert-tip>
+    <alert-tip :alertText="alertText" @closeTip="closeTip" v-if="showAlert"></alert-tip>
   </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
       loginWay: false, //登录方式，默认短信登录
       showPassword: false, // 是否显示密码
       // phoneNumber: null, //电话号码
-      mobileCode: null, //短信验证码
+      // mobileCode: null, //短信验证码
       validate_token: null, //获取短信时返回的验证值，登录时需要
       computedTime: 0, //倒数记时
       userInfo: null, //获取到的用户信息
@@ -113,7 +113,7 @@ export default {
     changePassWordType() {
       this.showPassword = !this.showPassword
     },
-    //获取验证吗，线上环境使用固定的图片，生产环境使用真实的验证码
+    // 获取验证吗，线上环境使用固定的图片，生产环境使用真实的验证码
     async getCaptchaCode() {
       let res = await getcaptchas()
       this.captchaCodeImg = res.code
@@ -188,7 +188,8 @@ export default {
           this.codeNumber
         )
       }
-      //如果返回的值不正确，则弹出提示框，返回的值正确则返回上一页
+      // 如果返回的值不正确，则弹出提示框，返回的值正确则返回上一页
+      // 比如输入验证码不匹配
       if (!this.userInfo.user_id) {
         this.showAlert = true
         this.alertText = this.userInfo.message
@@ -224,7 +225,6 @@ export default {
 }
 
 .loginForm {
-  border: 1px solid red;
   background-color: #fff;
   margin-top: 0.6rem;
   .input_container {
@@ -233,7 +233,6 @@ export default {
     padding: 0.6rem 0.8rem;
     border-bottom: 1px solid #f1f1f1;
     input {
-      border: 1px solid blue;
       @include sc(0.7rem, #666);
     }
     // button {

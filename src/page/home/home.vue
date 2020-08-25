@@ -66,6 +66,11 @@ export default {
   },
 
   mounted() {
+    // console.log('飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞')
+    // console.log(this.$store)
+    debugger
+    // console.log('都飞都飞都飞都飞都飞都飞都飞都飞都飞都飞都飞')
+
     // 获取当前城市
     cityGuess().then(res => {
       this.guessCity = res.name
