@@ -10,9 +10,12 @@
         <span>定位不准时，请在城市列表中选择</span>
       </div>
       <router-link :to="'/city/' + guessCityid" class="guess_city">
-        <span>{{guessCity}}</span>
+        <span>{{ guessCity }}</span>
         <svg class="arrow_right">
-          <use xlink:href="#arrow-right" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          <use
+            xlink:href="#arrow-right"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          />
         </svg>
       </router-link>
     </nav>
@@ -25,15 +28,20 @@
           :to="'/city/' + item.id"
           tag="li"
           v-for="item in hotcity"
-        >{{item.name}}</router-link>
+          >{{ item.name }}</router-link
+        >
       </ul>
     </section>
 
     <section class="group_city_container">
       <ul class="letter_classify">
-        <li :key="key" class="letter_classify_li" v-for="(value, key, index) in sortgroupcity">
+        <li
+          :key="key"
+          class="letter_classify_li"
+          v-for="(value, key, index) in sortgroupcity"
+        >
           <h4 class="city_title">
-            {{key}}
+            {{ key }}
             <span v-if="index == 0">（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
@@ -43,7 +51,8 @@
               class="ellipsis"
               tag="li"
               v-for="item in value"
-            >{{item.name}}</router-link>
+              >{{ item.name }}</router-link
+            >
           </ul>
         </li>
       </ul>
@@ -52,72 +61,70 @@
 </template>
 
 <script>
-import headTop from '../../components/header/head'
-import { cityGuess, hotcity, groupcity } from '../../service/getData'
+import headTop from "../../components/header/head";
+import { cityGuess, hotcity, groupcity } from "../../service/getData";
 
 export default {
   data() {
     return {
-      guessCity: '', //当前城市
-      guessCityid: '', //当前城市id
+      guessCity: "", //当前城市
+      guessCityid: "", //当前城市id
       hotcity: [], //热门城市列表
-      groupcity: {} //所有城市列表
-    }
+      groupcity: {}, //所有城市列表
+    };
   },
 
   mounted() {
-    // console.log('飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞')
     // console.log(this.$store)
-    debugger
     // console.log('都飞都飞都飞都飞都飞都飞都飞都飞都飞都飞都飞')
 
     // 获取当前城市
-    cityGuess().then(res => {
-      this.guessCity = res.name
-      this.guessCityid = res.id
-    })
+    cityGuess().then((res) => {
+      this.guessCity = res.name;
+      this.guessCityid = res.id;
+    });
 
     //获取热门城市
-    hotcity().then(res => {
-      this.hotcity = res
-    })
+    hotcity().then((res) => {
+      this.hotcity = res;
+    });
 
     //获取所有城市
-    groupcity().then(res => {
-      this.groupcity = res
-    })
+    groupcity().then((res) => {
+      this.groupcity = res;
+    });
   },
 
   components: {
-    headTop
+    headTop,
   },
 
   computed: {
     //将获取的数据按照A-Z字母开头排序
     sortgroupcity() {
-      let sortobj = {}
+      let sortobj = {};
       for (let i = 65; i <= 90; i++) {
         if (this.groupcity[String.fromCharCode(i)]) {
           sortobj[String.fromCharCode(i)] = this.groupcity[
             String.fromCharCode(i)
-          ]
+          ];
         }
       }
-      return sortobj
-    }
+      return sortobj;
+    },
   },
 
   methods: {
     //点击图标刷新页面
     reload() {
-      window.location.reload()
-    }
-  }
-}
+      window.location.reload();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../../style/mixin';
+@import "../../style/mixin";
 .head_logo {
   left: 0.4rem;
   font-weight: 400;
@@ -183,7 +190,7 @@ export default {
   text-indent: 0.45rem;
   border-top: 2px solid $bc;
   border-bottom: 1px solid $bc;
-  @include font(0.55rem, 1.45rem, 'Helvetica Neue');
+  @include font(0.55rem, 1.45rem, "Helvetica Neue");
   span {
     @include sc(0.475rem, #999);
   }

@@ -1,7 +1,9 @@
 <template>
   <div class="city_container">
     <head-top :head-title="cityname" go-back="true">
-      <router-link class="change_city" slot="changecity" to="/home">切换城市</router-link>
+      <router-link class="change_city" slot="changecity" to="/home"
+        >切换城市</router-link
+      >
     </head-top>
     <form class="city_form" v-on:submit.prevent>
       <div>
@@ -26,45 +28,55 @@
     </form>
     <header class="pois_search_history" v-if="historytitle">搜索历史</header>
     <ul class="getpois_ul">
-      <li :key="index" @click="nextpage(index, item.geohash)" v-for="(item, index) in placelist">
-        <h4 class="pois_name ellipsis">{{item.name}}</h4>
-        <p class="pois_address ellipsis">{{item.address}}</p>
+      <li
+        :key="index"
+        @click="nextpage(index, item.geohash)"
+        v-for="(item, index) in placelist"
+      >
+        <h4 class="pois_name ellipsis">{{ item.name }}</h4>
+        <p class="pois_address ellipsis">{{ item.address }}</p>
       </li>
     </ul>
-    <footer @click="clearAll" class="clear_all_history" v-if="historytitle&&placelist.length">清空所有</footer>
+    <footer
+      @click="clearAll"
+      class="clear_all_history"
+      v-if="historytitle && placelist.length"
+    >
+      清空所有
+    </footer>
     <div class="search_none_place" v-if="placeNone">很抱歉！无搜索结果</div>
   </div>
 </template>
 
 <script>
-import headTop from 'src/components/header/head'
-import { currentcity, searchplace } from 'src/service/getData'
-import { getStore, setStore, removeStore } from 'src/config/mUtils'
+import headTop from "src/components/header/head";
+import { currentcity, searchplace } from "src/service/getData";
+import { getStore, setStore, removeStore } from "src/config/mUtils";
 
 export default {
   data() {
     return {
-      inputVaule: '', // 搜索地址
-      cityid: '', // 当前城市id
-      cityname: '', // 当前城市名字
+      inputVaule: "", // 搜索地址
+      cityid: "", // 当前城市id
+      cityname: "", // 当前城市名字
       placelist: [], // 搜索城市列表
       placeHistory: [], // 历史搜索记录
       historytitle: true, // 默认显示搜索历史头部，点击搜索后隐藏
-      placeNone: false // 搜索无结果，显示提示信息
-    }
+      placeNone: false, // 搜索无结果，显示提示信息
+    };
   },
 
   mounted() {
-    this.cityid = this.$route.params.cityid
+    this.cityid = this.$route.params.cityid;
     //获取当前城市名字
-    currentcity(this.cityid).then(res => {
-      this.cityname = res.name
-    })
-    this.initData()
+    currentcity(this.cityid).then((res) => {
+      this.cityname = res.name;
+    });
+    this.initData();
   },
 
   components: {
-    headTop
+    headTop,
   },
 
   computed: {},
@@ -72,21 +84,21 @@ export default {
   methods: {
     initData() {
       //获取搜索历史记录
-      if (getStore('placeHistory')) {
-        this.placelist = JSON.parse(getStore('placeHistory'))
+      if (getStore("placeHistory")) {
+        this.placelist = JSON.parse(getStore("placeHistory"));
       } else {
-        this.placelist = []
+        this.placelist = [];
       }
     },
     //发送搜索信息inputVaule
     postpois() {
       //输入值不为空时才发送信息
       if (this.inputVaule) {
-        searchplace(this.cityid, this.inputVaule).then(res => {
-          this.historytitle = false
-          this.placelist = res
-          this.placeNone = res.length ? false : true
-        })
+        searchplace(this.cityid, this.inputVaule).then((res) => {
+          this.historytitle = false;
+          this.placelist = res;
+          this.placeNone = res.length ? false : true;
+        });
       }
     },
     /**
@@ -94,35 +106,36 @@ export default {
      * 如果没有则新增，如果有则不做重复储存，判断完成后进入下一页
      */
     nextpage(index, geohash) {
-      let history = getStore('placeHistory')
-      let choosePlace = this.placelist[index]
+      let history = getStore("placeHistory");
+      let choosePlace = this.placelist[index];
+      // 只有点击过的搜索历史项，才加入 localStorage
       if (history) {
-        let checkrepeat = false
-        this.placeHistory = JSON.parse(history)
-        this.placeHistory.forEach(item => {
+        let checkrepeat = false;
+        this.placeHistory = JSON.parse(history);
+        this.placeHistory.forEach((item) => {
           if (item.geohash == geohash) {
-            checkrepeat = true
+            checkrepeat = true;
           }
-        })
+        });
         if (!checkrepeat) {
-          this.placeHistory.push(choosePlace)
+          this.placeHistory.push(choosePlace);
         }
       } else {
-        this.placeHistory.push(choosePlace)
+        this.placeHistory.push(choosePlace);
       }
-      setStore('placeHistory', this.placeHistory)
-      this.$router.push({ path: '/msite', query: { geohash } })
+      setStore("placeHistory", this.placeHistory);
+      this.$router.push({ path: "/msite", query: { geohash } });
     },
     clearAll() {
-      removeStore('placeHistory')
-      this.initData()
-    }
-  }
-}
+      removeStore("placeHistory");
+      this.initData();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import 'src/style/mixin';
+@import "src/style/mixin";
 .city_container {
   padding-top: 2.35rem;
 }
