@@ -1,5 +1,5 @@
  <template>
-    <div>
+    <div class="shop_outer">
         <section v-if="!showLoading" class="shop_container">
             <nav class="goback" @click="goback">
                 <svg width="4rem" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -34,7 +34,6 @@
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left"></use>
                         </svg>
                     </footer>
-
                 </section>
             </header>
             <transition name="fade">
@@ -199,7 +198,7 @@
                 </section>
             </transition>
             <transition name="fade-choose">
-                <section class="rating_container" id="ratingContainer" v-show="changeShowType =='rating'">
+                <section class="rating_container1" id="ratingContainer" v-show="changeShowType =='rating'">
                     <section v-load-more="loaderMoreRating" type="2">
                         <section>
 
@@ -261,6 +260,7 @@
                 </section>
             </transition>
         </section>
+
         <section>
             <transition name="fade">
                 <div class="specs_cover" @click="showChooseList" v-if="showSpecs"></div>
@@ -292,9 +292,11 @@
                 </div>
             </transition>
         </section>
+
         <transition name="fade">
             <p class="show_delete_tip" v-if="showDeleteTip">多规格商品只能去购物车删除哦</p>
         </transition>
+
         <transition
         appear
         @after-appear = 'afterEnter'
@@ -307,13 +309,17 @@
                 </svg>
             </span>
         </transition>
+
        <loading v-show="showLoading || loadRatings"></loading>
+
        <section class="animation_opactiy shop_back_svg_container" v-if="showLoading">
            <img src="../../images/shop_back_svg.svg">
        </section>
+
        <transition name="router-slid" mode="out-in">
             <router-view></router-view>
         </transition>
+
     </div>
 </template>
 
@@ -706,6 +712,7 @@
 
 <style lang="scss" scoped>
     @import 'src/style/mixin';
+
     @keyframes mymove{
        0%   { transform: scale(1) }
        25%  { transform: scale(.8) }
@@ -741,13 +748,19 @@
             @include wh(100%, 100%);
         }
     }
+    .shop_outer {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
     .shop_container{
         display: flex;
         flex-direction: column;
         position: absolute;
         right: 0;
         left: 0;
-        height: 100%;
+        top: 0;
+        bottom: 0;
     }
     .goback{
         position: fixed;
@@ -763,10 +776,10 @@
         // overflow: hidden;
         position: relative;
         .header_cover_img_con {
-          height: 100%;
           overflow: hidden;
           position: absolute;
           width: 100%;
+          height: 100%;
           .header_cover_img{
               width: 100%;
               position: absolute;
@@ -818,6 +831,7 @@
             }
             .description_footer{
                 @include fj;
+                position: relative;
                 margin-top: 0.5rem;
                 padding-right: 1rem;
                 p{
@@ -840,6 +854,7 @@
                     @include wh(.45rem, .45rem);
                     position: absolute;
                     right: .3rem;
+                    top: .2rem;
                 }
             }
         }
@@ -1305,7 +1320,7 @@
             }
         }
     }
-    .rating_container{
+    .rating_container1{
         flex: 1;
         overflow-y: hidden;
         flex-direction: column;

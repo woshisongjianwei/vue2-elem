@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <transition mode="out-in" name="router-fade">
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -23,6 +23,11 @@ export default {
 
 <style lang="scss">
 @import './style/common';
+
+#app {
+  width: 100%;
+  height: 100%;
+}
 .router-fade-enter-active,
 .router-fade-leave-active {
   transition: opacity 0.3s;

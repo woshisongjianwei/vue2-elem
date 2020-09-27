@@ -111,9 +111,9 @@ export default {
     return {
       offset: 0, // 批次加载店铺列表，每次加载20个 limit = 20
       shopListArr: [], // 店铺列表数据
-      preventRepeatReuqest: false, //到达底部加载数据，防止重复加载
+      preventRepeatReuqest: false, // 永远不允许两次请求同时在路上，防止重复加载
       showBackStatus: false, //显示返回顶部按钮
-      showLoading: true, //显示加载动画
+      showLoading: false, //显示加载动画
       touchend: false, //没有更多数据
       imgBaseUrl,
     };
@@ -143,6 +143,7 @@ export default {
   },
   methods: {
     async initData() {
+      this.showLoading = true;
       //获取数据
       let res = await shopList(
         this.latitude,
@@ -154,7 +155,9 @@ export default {
       if (res.length < 20) {
         this.touchend = true;
       }
-      this.hideLoading();
+      setTimeout(() => {
+        this.showLoading = false;
+      }, 2000);
       //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
       showBack((status) => {
         this.showBackStatus = status;
@@ -181,7 +184,9 @@ export default {
         this.offset,
         this.restaurantCategoryId
       );
-      this.hideLoading();
+      setTimeout(() => {
+        this.hideLoading();
+      }, 2000);
       this.shopListArr = [...this.shopListArr, ...res];
       //当获取数据小于20，说明没有更多数据，不需要再次请求数据
       if (res.length < 20) {
@@ -396,10 +401,14 @@ export default {
 }
 .loading-enter-active,
 .loading-leave-active {
-  transition: opacity 1s;
+  transition: opacity 2s;
 }
 .loading-enter,
-.loading-leave-active {
+.loading-leave-to {
   opacity: 0;
+}
+.loading-leave,
+.loading-enter-to {
+  opacity: 1;
 }
 </style>
